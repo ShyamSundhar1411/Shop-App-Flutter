@@ -12,7 +12,9 @@ class MyApp extends StatelessWidget {
       title: 'MyShop',
       home: ProductOverViewScreen(),
       theme:ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.purple,
+        accentColor: Colors.deepOrange,
+        fontFamily: 'Lato'
       )
     );
   }
