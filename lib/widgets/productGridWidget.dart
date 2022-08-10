@@ -12,7 +12,9 @@ class ProductGridWidget extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       itemCount: loadedProducts.length,
       itemBuilder: (context, index) {
-        return ProductDisplayWidget(loadedProducts[index]);
+        return ChangeNotifierProvider.value(
+            value:  loadedProducts[index],
+            child: ProductDisplayWidget());
       },
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 3 / 2,
