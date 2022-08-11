@@ -5,10 +5,13 @@ import '../widgets/productDisplayWidget.dart';
 import '../widgets/productGridWidget.dart';
 import '../providers/productProviders.dart';
 import 'package:provider/provider.dart';
+import '../widgets/badge.dart';
+import '../providers/cartProvider.dart';
 
 enum FilterOptions {
   Favorites,
   All,
+  Cart,
 }
 
 class ProductOverViewScreen extends StatefulWidget {
@@ -26,13 +29,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
           onSelected: (FilterOptions selectedValue) {
             setState(() {
               if (selectedValue == FilterOptions.Favorites) {
-              _showOnlyFavorites = true;
-              
-            } else {
-              _showOnlyFavorites = false;
-            }
+                _showOnlyFavorites = true;
+              } else {
+                _showOnlyFavorites = false;
+              }
             });
-            
           },
           icon: Icon(
             Icons.more_vert,
@@ -42,7 +43,14 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
                 child: Text("Only Favorites"), value: FilterOptions.Favorites),
             PopupMenuItem(child: Text('Show All'), value: FilterOptions.All),
           ],
-        )
+        ),
+        Consumer<Cart>(
+            builder: (_, cart, ch) =>
+                Badge(child: ch, value: cart.itemCount.toString()),
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {},
+            ))
       ]),
       body: ProductGridWidget(_showOnlyFavorites),
     );

@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
 import '../models/product.dart';
+import '../providers/cartProvider.dart';
 
 class ProductDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productPassed = Provider.of<Product>(context);
+    final cartContainer = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: GridTile(
@@ -28,10 +30,12 @@ class ProductDisplayWidget extends StatelessWidget {
                 onPressed: () {
                   productPassed.toggleFavoriteStatus();
                 },
-                icon: Icon(productPassed.isFavorite?Icons.favorite:Icons.favorite_border,
+                icon: Icon(
+                  productPassed.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border,
                 ),
-                color:Colors.redAccent 
-              ),
+                color: Colors.redAccent),
           ),
           title: Text(
             productPassed.title,
@@ -39,7 +43,10 @@ class ProductDisplayWidget extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
+            onPressed: () {
+              cartContainer.addItem(
+                  productPassed.id, productPassed.price, productPassed.title);
+            },
             color: Theme.of(context).accentColor,
           ),
         ),
