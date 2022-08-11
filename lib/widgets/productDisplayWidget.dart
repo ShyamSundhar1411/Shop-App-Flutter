@@ -30,7 +30,7 @@ class ProductDisplayWidget extends StatelessWidget {
                 },
                 icon: Icon(productPassed.isFavorite?Icons.favorite:Icons.favorite_border,
                 ),
-                color:Colors.redAccent
+                color:Colors.redAccent 
               ),
           ),
           title: Text(
