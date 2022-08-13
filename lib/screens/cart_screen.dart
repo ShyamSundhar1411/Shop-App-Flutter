@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/widgets/cartItemDispalyWidget.dart';
 import '../providers/cartProvider.dart';
+import '../providers/orderProvider.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -33,7 +34,12 @@ class CartScreen extends StatelessWidget {
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
                         FlatButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Provider.of<Orders>(context, listen: false)
+                                  .addOrder(cart.items.values.toList(),
+                                      cart.totalPrice);
+                              cart.clear();
+                            },
                             child: Text("Order Now"),
                             textColor: Theme.of(context).primaryColor),
                       ],
@@ -43,7 +49,12 @@ class CartScreen extends StatelessWidget {
                 child: ListView.builder(
               itemCount: cart.items.length,
               itemBuilder: (ctx, index) {
-                return CartItemWidget(cart.items.values.toList()[index].id, cart.items.keys.toList()[index],cart.items.values.toList()[index].price, cart.items.values.toList()[index].quantity, cart.items.values.toList()[index].title);
+                return CartItemWidget(
+                    cart.items.values.toList()[index].id,
+                    cart.items.keys.toList()[index],
+                    cart.items.values.toList()[index].price,
+                    cart.items.values.toList()[index].quantity,
+                    cart.items.values.toList()[index].title);
               },
             ))
           ],
