@@ -11,9 +11,10 @@ class Badge extends StatelessWidget {
   final Widget child;
   final String value;
   final Color color;
-
+  
   @override
   Widget build(BuildContext context) {
+    print(value);
     return Stack(
       alignment: Alignment.center,
       children: [

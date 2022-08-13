@@ -5,7 +5,6 @@ class CartItem {
   final String title;
   final quantity;
   final double price;
-  double total = 0.0;
   CartItem(this.id, this.title, this.price, this.quantity);
 }
 
@@ -16,23 +15,34 @@ class Cart with ChangeNotifier {
   }
 
   int get itemCount {
-    if (_items == null) {
-      return 0;
-    } else {
-      return _items.length;
-    }
+    int count = _items.isEmpty ? 0 : _items.length;
+    return count;
+  }
+
+  double get totalPrice {
+    double total = 0.0;
+    _items.forEach((key, cartItem) {
+      total += cartItem.price * cartItem.quantity;
+    });
+    return total;
   }
 
   void addItem(String id, double price, String title) {
     if (_items.containsKey(id)) {
+      print("Called Existing");
       _items.update(
           id,
-          (value) =>
-              CartItem(value.id, value.title, value.price, value.quantity + 1));
+          (cartItem) => CartItem(cartItem.id, cartItem.title, cartItem.price,
+              cartItem.quantity + 1));
     } else {
       _items.putIfAbsent(
           id, () => CartItem(DateTime.now().toString(), title, price, 1));
     }
+    notifyListeners();
   }
-  notifyListeners();
+
+  void removeItem(String id) {
+    _items.remove(id);
+    notifyListeners();
+  }
 }
