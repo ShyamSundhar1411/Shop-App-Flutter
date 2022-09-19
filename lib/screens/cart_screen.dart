@@ -33,15 +33,16 @@ class CartScreen extends StatelessWidget {
                           ),
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
-                        FlatButton(
+                        ElevatedButton(
                             onPressed: () {
                               Provider.of<Orders>(context, listen: false)
                                   .addOrder(cart.items.values.toList(),
                                       cart.totalPrice);
                               cart.clear();
                             },
-                            child: Text("Order Now"),
-                            textColor: Theme.of(context).primaryColor),
+                            child: Text("Order Now",
+                                style: TextStyle(
+                                    color: Colors.white))),
                       ],
                     ))),
             SizedBox(height: 20),
