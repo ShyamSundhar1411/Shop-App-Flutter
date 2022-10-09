@@ -200,7 +200,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                     Image.network(_imageUrlController.text))),
                     Expanded(
                       child: TextFormField(
-                        initialValue: _initValues['title'],
                         validator: ((value) {
                           if (value.isEmpty) {
                             return 'Please provide a value';
