@@ -23,6 +23,9 @@ class ProductProvider with ChangeNotifier {
       final response = await http.get(url);
       final List<Product> _loadedProducts = [];
       final data = json.decode(response.body) as Map<String, dynamic>;
+      if (data == null) {
+        return;
+      }
       data.forEach((id, data) {
         _loadedProducts.add(Product(
             id: id,
@@ -108,7 +111,6 @@ class ProductProvider with ChangeNotifier {
       throw HttpException("Could not delete product");
     }
     existingProduct = null;
-
   }
 
   Product getProductById(String id) {

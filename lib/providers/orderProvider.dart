@@ -26,20 +26,45 @@ class Orders with ChangeNotifier {
           body: json.encode({
             'amount': total,
             'dateTime': timeStamp.toIso8601String(),
-            'products': cartProducts.map((element)=>{
-              'id':element.id,
-              'title':element.title,
-              'quantity':element.quantity,
-              'price':element.price,
-            }).toList(),
+            'products': cartProducts
+                .map((element) => {
+                      'id': element.id,
+                      'title': element.title,
+                      'quantity': element.quantity,
+                      'price': element.price,
+                    })
+                .toList(),
           }));
       final responseContent = json.decode(response.body);
-      final OrderItem order = OrderItem(
-          responseContent['name'].toString(), total, cartProducts, DateTime.now());
+      final OrderItem order = OrderItem(responseContent['name'].toString(),
+          total, cartProducts, DateTime.now());
       _orders.insert(0, order);
       notifyListeners();
     } catch (error) {
       throw error;
     }
+  }
+
+  Future<void> fetchOrders() async {
+    final url = Uri.https(
+        'flutter-shop-app-1bfc9-default-rtdb.firebaseio.com', '/orders.json');
+    final response = await http.get(url);
+    final List<OrderItem> loadedOrders = [];
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((id, data) {
+      loadedOrders.add(OrderItem(
+          id,
+          data['amount'],
+          (data['products'] as List<dynamic>).map((item) => CartItem(
+              item['id'], item['title'], item['price'], item['quantity'])).toList(),
+          DateTime.parse(data['dateTime'])
+          )
+          );
+    });
+    _orders = loadedOrders;
+    notifyListeners();
   }
 }
